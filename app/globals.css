@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-gray-100;
+  }
+}
+
+.tab {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 9999px;
+}
+.tab-active {
+  background-color: #e2e8f0; /* bg-gray-200 */
+  color: #4299e1; /* text-blue-600 */
+  font-weight: 600;
+}
+/* styles.css or your preferred stylesheet */
+
+.tab-content {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out; /* Add a transition effect */
+}
+
+.tab-content.inactive {
+  opacity: 0;
+  pointer-events: none; /* Disable pointer events for inactive tabs */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
