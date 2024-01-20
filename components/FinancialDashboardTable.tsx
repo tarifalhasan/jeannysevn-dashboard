@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import TableHead from "./Table/TableHead";
 import Tabs from "./Tabs";
+import { Table, TableCell, TableRow } from "./ui/Table";
 
 interface Tab {
   id: number;
@@ -68,27 +68,36 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
           <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
 
           <div className="relative w-full overflow-auto">
-            <table className="min-w-max table-auto w-full ">
-              <TableHead columns={data.table.columns} />
+            <Table>
+              {/* <TableHead columns={data.table.columns} /> */}
+              <thead>
+                <TableRow className="text-left text-gray-600 text-sm bg-gray-200">
+                  {data.table.columns.map((column) => (
+                    <TableCell key={column.id}>
+                      <p>{column.key}</p>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </thead>
               <tbody className="text-gray-700">
                 {data.table.rows.map((row) => (
-                  <tr key={row.id}>
-                    <td>
+                  <TableRow key={row.id}>
+                    <TableCell>
                       <p>{row.name}</p>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <p>{row.quantity}</p>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <p>{row.price}</p>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <p>{row.avgCost}</p>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <p>{row.mktValue}</p>
-                    </td>
-                    <td
+                    </TableCell>
+                    <TableCell
                       className={`py-3 ${
                         typeof row.gainLoss === "string" &&
                         parseFloat(row.gainLoss.replace(/[^\d.-]/g, "")) < 0
@@ -97,11 +106,11 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
                       }`}
                     >
                       {row.gainLoss}
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <p>{row.portfolioPercentage}</p>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <div>
                         <button className="text-blue-600 hover:text-blue-700">
                           Buy
@@ -110,11 +119,11 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
                           Sell
                         </button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
               </tbody>
-            </table>
+            </Table>
           </div>
         </div>
       </div>
