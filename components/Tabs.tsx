@@ -1,11 +1,9 @@
-// Tabs.tsx
-
 import React from "react";
 
 interface Tab {
   id: number;
   label: string;
-  data: string;
+  active: boolean;
 }
 
 interface TabsProps {
@@ -32,7 +30,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabClick }) => {
       </ul>
       <div className="tab-content">
         {/* Render content for the active tab based on activeTab and tabs data */}
-        {/* {tabs.find((tab) => tab.id === activeTab)?.data} */}
+        {/* {tabs.find((tab) => tab.id === activeTab)?.label} Content */}
       </div>
     </div>
   );

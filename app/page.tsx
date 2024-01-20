@@ -4,12 +4,6 @@ import Overviews from "@/components/Overviews";
 const dummyData = {
   overview: {
     title: "Overview",
-    tabs: [
-      { id: 1, label: "Holdings", active: true },
-      { id: 2, label: "Activity", active: false },
-      { id: 3, label: "Performance", active: false },
-      { id: 4, label: "Gain & Loss", active: false },
-    ],
   },
   table: {
     columns: [
@@ -57,35 +51,70 @@ const dummyData = {
   },
 };
 
-const navLinks = [
-  { id: 1, label: "Dashboard", href: "#" },
-  { id: 2, label: "Quote", href: "#" },
-  { id: 3, label: "Buy/Sell", href: "#" },
-  { id: 4, label: "Orders", href: "#" },
-  { id: 5, label: "Transfers", href: "#" },
-  { id: 6, label: "Watchlists", href: "#" },
-];
-const dummyUserInfo = {
-  avatar: "/alex-suprun-ZHvM3XIOHoE-unsplash.jpg",
-};
-
-const overviewsData = [
-  {
-    id: 1,
-    title: "Total Balance",
-    amount: "$16,412.92",
-    gainLoss: "+$648.83",
-  },
-  { id: 2, title: "Investments", amount: "$15,606.14", gainLoss: "+$648.83" },
-  { id: 3, title: "Cash", amount: "$806.78" },
-];
-
 export default function Home() {
   return (
     <>
-      <Navbar userInfo={dummyUserInfo} navLinks={navLinks} />
-      <Overviews data={overviewsData} />
-      <FinancialDashboardTable data={dummyData} />
+      <Navbar
+        userInfo={{
+          avatar: "/alex-suprun-ZHvM3XIOHoE-unsplash.jpg",
+        }}
+        navLinks={[
+          { id: 1, label: "Dashboard", href: "#" },
+          { id: 2, label: "Quote", href: "#" },
+          { id: 3, label: "Buy/Sell", href: "#" },
+          { id: 4, label: "Orders", href: "#" },
+          { id: 5, label: "Transfers", href: "#" },
+          { id: 6, label: "Watchlists", href: "#" },
+        ]}
+      />
+      <Overviews
+        data={[
+          {
+            id: 1,
+            title: "Total Balance",
+            amount: "$16,412.92",
+            gainLoss: "+$648.83",
+          },
+          {
+            id: 2,
+            title: "Investments",
+            amount: "$15,606.14",
+            gainLoss: "+$648.83",
+          },
+          { id: 3, title: "Cash", amount: "$806.78" },
+        ]}
+      />
+      <FinancialDashboardTable
+        tabs={[
+          { id: 1, label: "Holdings", active: true },
+          { id: 2, label: "Activity", active: false },
+          { id: 3, label: "Performance", active: false },
+          { id: 4, label: "Gain & Loss", active: false },
+        ]}
+        title="Overview"
+        columns={[
+          "NAME",
+          "QUANTITY",
+          "PRICE",
+          "AVG COST	",
+          "MKT VALUE",
+          "GAIN/LOSE",
+          "% OF PORTFOLIO	",
+          "BUY/SELL ",
+        ]}
+        rows={[
+          {
+            id: 1,
+            name: "TDB900",
+            quantity: 140.143,
+            price: "$25.70	",
+            avg_cost: "$24.49",
+            mkt_value: "$3,601.68",
+            gain_or_lose: "+$170.00",
+            percentage_of_portfolio: "10.10%	",
+          },
+        ]}
+      />
     </>
   );
 }

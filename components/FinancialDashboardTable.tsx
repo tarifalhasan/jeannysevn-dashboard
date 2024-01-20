@@ -10,46 +10,34 @@ interface Tab {
   active: boolean;
 }
 
-interface TableColumn {
-  id: number;
-  label: string;
-  key: string;
-  additionalClasses?: string;
-}
-
 interface TableRow {
   id: number;
   [key: string]: React.ReactNode;
 }
 
-interface Overview {
-  title: string;
-  tabs: Tab[];
-}
-
-interface FinancialData {
-  overview: Overview;
-  table: {
-    columns: TableColumn[];
-    rows: TableRow[];
-  };
-}
-
 interface FinancialDashboardTableProps {
-  data: FinancialData;
+  tabs: Tab[];
+  title: string;
+  rows: Array<{
+    id: number;
+    name: string;
+    quantity: number;
+    price: string;
+    avg_cost: string;
+    mkt_value: string;
+    gain_or_lose: string;
+    percentage_of_portfolio: string;
+  }>;
+  columns: string[];
 }
 
 const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
-  data,
+  tabs,
+  title,
+  columns,
+  rows,
 }) => {
   const [activeTab, setActiveTab] = useState<number>(1);
-
-  const tabs = [
-    { id: 1, label: "Holdings", data: "Data for Holdings" },
-    { id: 2, label: "Activity", data: "Data for Activity" },
-    { id: 3, label: "Performance", data: "Data for Performance" },
-    { id: 4, label: "Gain & Loss", data: "Data for Gain & Loss" },
-  ];
 
   const handleTabClick = (tabId: number) => {
     setActiveTab(tabId);
@@ -60,27 +48,24 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
       <div className="max-w-6xl mx-auto p-3 sm:p-6 w-full">
         <div className="bg-white w-full p-6 rounded-lg shadow mb-8">
           <div className="mb-4 border-b border-gray-200 pb-4">
-            <div className="text-gray-700 font-semibold text-lg">
-              {data.overview.title}
-            </div>
+            <div className="text-gray-700 font-semibold text-lg">{title}</div>
           </div>
           {/* ===== TABS ====== */}
           <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
 
           <div className="relative w-full overflow-auto">
             <Table>
-              {/* <TableHead columns={data.table.columns} /> */}
               <thead>
                 <TableRow className="text-left text-gray-600 text-sm bg-gray-200">
-                  {data.table.columns.map((column) => (
-                    <TableCell key={column.id}>
-                      <p>{column.key}</p>
+                  {columns.map((column, index) => (
+                    <TableCell key={index}>
+                      <p>{column}</p>
                     </TableCell>
                   ))}
                 </TableRow>
               </thead>
               <tbody className="text-gray-700">
-                {data.table.rows.map((row) => (
+                {rows.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell>
                       <p>{row.name}</p>
@@ -92,23 +77,23 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
                       <p>{row.price}</p>
                     </TableCell>
                     <TableCell>
-                      <p>{row.avgCost}</p>
+                      <p>{row.avg_cost}</p>
                     </TableCell>
                     <TableCell>
-                      <p>{row.mktValue}</p>
+                      <p>{row.mkt_value}</p>
                     </TableCell>
                     <TableCell
                       className={`py-3 ${
-                        typeof row.gainLoss === "string" &&
-                        parseFloat(row.gainLoss.replace(/[^\d.-]/g, "")) < 0
+                        typeof row.gain_or_lose === "string" &&
+                        parseFloat(row.gain_or_lose.replace(/[^\d.-]/g, "")) < 0
                           ? "text-red-500"
                           : "text-green-500"
                       }`}
                     >
-                      {row.gainLoss}
+                      {row.gain_or_lose}
                     </TableCell>
                     <TableCell>
-                      <p>{row.portfolioPercentage}</p>
+                      <p>{row.percentage_of_portfolio}</p>
                     </TableCell>
                     <TableCell>
                       <div>
