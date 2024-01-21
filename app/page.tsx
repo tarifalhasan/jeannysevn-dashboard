@@ -52,6 +52,40 @@ const dummyData = {
 };
 
 export default function Home() {
+  const dummyData = {
+    tabs: [
+      { id: 1, label: "Holdings", active: true },
+      { id: 2, label: "Activity", active: false },
+      { id: 3, label: "Performance", active: false },
+      { id: 4, label: "Gain & Loss", active: false },
+    ],
+    title: "Overview",
+    data: {
+      columns: [
+        "NAME",
+        "QUANTITY",
+        "PRICE",
+        "AVG COST",
+        "MKT VALUE",
+        "GAIN/LOSE",
+        "PORTFOLIO",
+        "BUY/SELL",
+      ],
+      rows: [
+        {
+          id: 1,
+          name: "TDB900",
+          quantity: 140.143,
+          price: "$25.70",
+          avgCost: "$24.49",
+          mktValue: "$3,601.68",
+          gainLose: "+$170.00",
+          portfolio: "10.10%",
+        },
+      ],
+    },
+  };
+
   return (
     <>
       <Navbar
@@ -84,37 +118,8 @@ export default function Home() {
           { id: 3, title: "Cash", amount: "$806.78" },
         ]}
       />
-      <FinancialDashboardTable
-        tabs={[
-          { id: 1, label: "Holdings", active: true },
-          { id: 2, label: "Activity", active: false },
-          { id: 3, label: "Performance", active: false },
-          { id: 4, label: "Gain & Loss", active: false },
-        ]}
-        title="Overview"
-        columns={[
-          "NAME",
-          "QUANTITY",
-          "PRICE",
-          "AVG COST	",
-          "MKT VALUE",
-          "GAIN/LOSE",
-          "% OF PORTFOLIO	",
-          "BUY/SELL ",
-        ]}
-        rows={[
-          {
-            id: 1,
-            name: "TDB900",
-            quantity: 140.143,
-            price: "$25.70	",
-            avg_cost: "$24.49",
-            mkt_value: "$3,601.68",
-            gain_or_lose: "+$170.00",
-            percentage_of_portfolio: "10.10%	",
-          },
-        ]}
-      />
+      {/* dashboard table */}
+      <FinancialDashboardTable {...dummyData} />
     </>
   );
 }

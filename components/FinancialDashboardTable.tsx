@@ -10,37 +10,39 @@ interface Tab {
   active: boolean;
 }
 
-interface TableRow {
+interface DynamicTableRow {
   id: number;
   [key: string]: React.ReactNode;
 }
 
-interface FinancialDashboardTableProps {
+interface DashboardTableProps<T> {
   tabs: Tab[];
   title: string;
-  rows: Array<{
-    id: number;
-    name: string;
-    quantity: number;
-    price: string;
-    avg_cost: string;
-    mkt_value: string;
-    gain_or_lose: string;
-    percentage_of_portfolio: string;
-  }>;
-  columns: string[];
+  data: {
+    columns: string[];
+    rows: T[];
+  };
 }
 
-const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
+const DashboardTable: React.FC<DashboardTableProps<DynamicTableRow>> = ({
   tabs,
   title,
-  columns,
-  rows,
+  data: { columns, rows },
 }) => {
   const [activeTab, setActiveTab] = useState<number>(1);
 
   const handleTabClick = (tabId: number) => {
     setActiveTab(tabId);
+  };
+
+  const toCamelCase = (columnName: string) => {
+    const cleanedName = columnName
+      .replace(/%/g, "") // Remove percentage sign
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase())
+      .replace(/[^a-zA-Z0-9]+/g, ""); // Remove any remaining special characters
+
+    return cleanedName.charAt(0).toLowerCase() + cleanedName.slice(1);
   };
 
   return (
@@ -50,7 +52,7 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
           <div className="mb-4 border-b border-gray-200 pb-4">
             <div className="text-gray-700 font-semibold text-lg">{title}</div>
           </div>
-          {/* ===== TABS ====== */}
+
           <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
 
           <div className="relative w-full overflow-auto">
@@ -65,48 +67,30 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
                 </TableRow>
               </thead>
               <tbody className="text-gray-700">
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>
-                      <p>{row.name}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p>{row.quantity}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p>{row.price}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p>{row.avg_cost}</p>
-                    </TableCell>
-                    <TableCell>
-                      <p>{row.mkt_value}</p>
-                    </TableCell>
-                    <TableCell
-                      className={`py-3 ${
-                        typeof row.gain_or_lose === "string" &&
-                        parseFloat(row.gain_or_lose.replace(/[^\d.-]/g, "")) < 0
-                          ? "text-red-500"
-                          : "text-green-500"
-                      }`}
-                    >
-                      {row.gain_or_lose}
-                    </TableCell>
-                    <TableCell>
-                      <p>{row.percentage_of_portfolio}</p>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <button className="text-blue-600 hover:text-blue-700">
-                          Buy
-                        </button>
-                        <button className="text-blue-600 hover:text-blue-700 ml-2">
-                          Sell
-                        </button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {rows.map((row, i, arry) => {
+                  return (
+                    <TableRow key={row.id}>
+                      {columns.slice(0, -1).map((column, index) => (
+                        <TableCell key={index}>
+                          <p>{row[toCamelCase(column)]}</p>
+                        </TableCell>
+                      ))}
+
+                      <TableCell key="lastColumn">
+                        {i === arry.length - 1 && (
+                          <div className="flex items-center gap-1">
+                            <button className="text-blue-600 hover:text-blue-700">
+                              Buy
+                            </button>
+                            <button className="text-blue-600 hover:text-blue-700 ml-2">
+                              Sell
+                            </button>
+                          </div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </tbody>
             </Table>
           </div>
@@ -116,4 +100,4 @@ const FinancialDashboardTable: React.FC<FinancialDashboardTableProps> = ({
   );
 };
 
-export default FinancialDashboardTable;
+export default DashboardTable;
